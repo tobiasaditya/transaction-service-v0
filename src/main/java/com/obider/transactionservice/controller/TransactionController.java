@@ -11,13 +11,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -38,5 +36,12 @@ public class TransactionController {
         User currentUser = (User) request.getAttribute("user");
         Transaction newTransaction = transactionService.addTransaction(currentUser.getId(),inputTransaction);
         return ResponsesHandler.generateResponse("Success create transaction", HttpStatus.OK,newTransaction);
+    }
+
+    @GetMapping(path = "/all")
+    public ResponseEntity<Object> getTransactions(HttpServletRequest request){
+        User currentUser = (User) request.getAttribute("user");
+        List<Transaction> transactions = transactionService.getTransactions(currentUser.getId());
+        return ResponsesHandler.generateResponse("Success get transactions", HttpStatus.OK,transactions);
     }
 }

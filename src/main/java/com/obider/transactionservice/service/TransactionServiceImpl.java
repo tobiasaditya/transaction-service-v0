@@ -33,7 +33,7 @@ public class TransactionServiceImpl implements TransactionService{
 
     @Override
     public List<Transaction> getTransactions(String userId) {
-        return null;
+        return transactionRepository.getUserTransactions(userId);
     }
 
     @Override
