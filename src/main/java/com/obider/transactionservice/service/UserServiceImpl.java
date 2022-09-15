@@ -6,6 +6,7 @@ import com.obider.transactionservice.exception.RestExceptionConstants;
 import com.obider.transactionservice.exception.RestExceptionNotFound;
 import com.obider.transactionservice.model.User;
 import com.obider.transactionservice.repository.UserRepository;
+import com.obider.transactionservice.security.HashPassword;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService{
                 inputUser.getPhoneNumber(),
                 "",
                 LocalDateTime.now(),
-                inputUser.getPassword()
+                HashPassword.hashedPassword(inputUser.getPassword())
         );
         userRepository.insert(newUser);
         return newUser;

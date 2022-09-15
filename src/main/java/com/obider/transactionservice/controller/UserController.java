@@ -35,7 +35,7 @@ public class UserController {
             throw new RestExceptionUnprocessableEntity("Invalid input", RestExceptionConstants.USR202_02,bindingResult.getAllErrors());
         }
         User newUser = userService.createUser(inputUser);
-        return ResponsesHandler.generateResponse("Success create new user", HttpStatus.OK,inputUser);
+        return ResponsesHandler.generateResponse("Success create new user", HttpStatus.OK,newUser);
     }
 
     @GetMapping(path = "/{userId}")
