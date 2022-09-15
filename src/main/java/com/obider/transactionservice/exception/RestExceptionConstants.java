@@ -11,7 +11,7 @@ public interface RestExceptionConstants {
     String USR203_03 = "USR203_03";
 
     //Transaction exception
-    String USR401_01 = "USR402_01";
-    String USR401_02 = "USR402_02";
+    String TRX401_01 = "TRX402_01";
+    String TRX401_02 = "TRX402_02";
 
 }
