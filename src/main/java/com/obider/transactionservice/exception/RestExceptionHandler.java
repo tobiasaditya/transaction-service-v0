@@ -17,7 +17,12 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(value = {RestExceptionUnprocessableEntity.class})
-    public ResponseEntity<Object> handleBadRequestException(RestExceptionUnprocessableEntity e){
+    public ResponseEntity<Object> handleUnprocessableEntityException(RestExceptionUnprocessableEntity e){
         return ResponsesHandler.generateResponseError(e,HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(value = {RestExceptionNotFound.class})
+    public ResponseEntity<Object> handleNotFoundException(RestExceptionNotFound e){
+        return ResponsesHandler.generateResponseError(e,HttpStatus.NOT_FOUND);
     }
 }
