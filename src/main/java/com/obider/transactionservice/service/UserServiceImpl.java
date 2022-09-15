@@ -9,6 +9,7 @@ import com.obider.transactionservice.exception.RestExceptionUnauthorized;
 import com.obider.transactionservice.model.User;
 import com.obider.transactionservice.repository.UserRepository;
 import com.obider.transactionservice.security.HashPassword;
+import com.obider.transactionservice.security.JwtToken;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -65,8 +66,7 @@ public class UserServiceImpl implements UserService{
         if (!HashPassword.verifyPassword(input.getPassword(),foundUser.getPassword())){
             throw new RestExceptionUnauthorized("incorrect username/password 2",RestExceptionConstants.USR401_02);
         }
-
-        return "token";
+        return JwtToken.generate(foundUser);
     }
 
     private User getUserByPhone(String phoneNumber) {
