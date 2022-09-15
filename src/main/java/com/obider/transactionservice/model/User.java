@@ -1,5 +1,6 @@
 package com.obider.transactionservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -19,8 +20,10 @@ public class User {
     private String email;
     @Indexed(unique = true)
     private String phoneNumber;
+    @JsonIgnore
     private String token;
     private LocalDateTime createTime;
+    @JsonIgnore
     private String password;
 
     public User(String firstName, String lastName, String email, String phoneNumber, String token, LocalDateTime createTime, String password) {
