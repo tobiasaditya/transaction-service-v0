@@ -7,6 +7,7 @@ import com.obider.transactionservice.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -32,8 +33,8 @@ public class TransactionServiceImpl implements TransactionService{
     }
 
     @Override
-    public List<Transaction> getTransactions(String userId) {
-        return transactionRepository.getUserTransactions(userId);
+    public List<Transaction> getTransactions(String userId, LocalDate startDate, LocalDate endDate) {
+        return transactionRepository.getUserTransactions(userId,startDate,endDate);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.obider.transactionservice.model.Transaction;
 import com.obider.transactionservice.model.User;
 import com.obider.transactionservice.responses.ResponsesHandler;
 import com.obider.transactionservice.service.TransactionService;
+import com.obider.transactionservice.utils.DateFormatter;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -29,7 +33,7 @@ public class TransactionController {
             @Valid @RequestBody InputTransaction inputTransaction, BindingResult bindingResult){
         //Check validation error
         if (bindingResult.hasErrors()){
-            throw new RestExceptionUnprocessableEntity("Invalid input", RestExceptionConstants.USR202_02,bindingResult.getAllErrors());
+            throw new RestExceptionUnprocessableEntity("Invalid input", RestExceptionConstants.TRX401_01,bindingResult.getAllErrors());
         }
 
         //Get current user
@@ -39,9 +43,27 @@ public class TransactionController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<Object> getTransactions(HttpServletRequest request){
+    public ResponseEntity<Object> getTransactions(
+            HttpServletRequest request,
+            @RequestParam(value = "startDate",required = false)String inputStartDate,
+            @RequestParam(value = "endDate",required = false)String inputEndDate
+            ){
+        LocalDate now = LocalDate.now();
+        //Default startDate = Start date of this month
+        LocalDate startDate = inputStartDate==null? LocalDate.of(now.getYear(),now.getMonth(),1) : DateFormatter.parseStringToDate(inputStartDate);
+        //Default endDate = Start date of next month
+        LocalDate endDate = inputEndDate==null? LocalDate.of(now.getYear(),now.getMonth().plus(1),1) : DateFormatter.parseStringToDate(inputEndDate);
+        System.out.println(startDate);
+        System.out.println(endDate);
+        if(startDate==null || endDate==null){
+            throw new RestExceptionUnprocessableEntity("Invalid date input", RestExceptionConstants.TRX401_01);
+        } else if (
+                startDate.getYear() != endDate.getYear() || endDate.getMonthValue() - startDate.getMonthValue() > 2){
+            throw new RestExceptionUnprocessableEntity("Invalid range date", RestExceptionConstants.TRX401_01);
+        }
+
         User currentUser = (User) request.getAttribute("user");
-        List<Transaction> transactions = transactionService.getTransactions(currentUser.getId());
+        List<Transaction> transactions = transactionService.getTransactions(currentUser.getId(),startDate,endDate);
         return ResponsesHandler.generateResponse("Success get transactions", HttpStatus.OK,transactions);
     }
 }
