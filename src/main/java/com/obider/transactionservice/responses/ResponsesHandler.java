@@ -1,6 +1,7 @@
 package com.obider.transactionservice.responses;
 
 import com.obider.transactionservice.exception.RestExceptionBadRequest;
+import com.obider.transactionservice.exception.RestExceptionBase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -27,16 +28,18 @@ public class ResponsesHandler {
 
         return new ResponseEntity<Object>(map,status);
     }
-    public static ResponseEntity<Object> generateResponseError(RestExceptionBadRequest errorObj, HttpStatus status){
+    public static ResponseEntity<Object> generateResponseError(RestExceptionBase errorObj, HttpStatus status){
         Map<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("timestamp", LocalDateTime.now());
         map.put("status", status.value());
         map.put("message", errorObj.getMessage());
         map.put("data", null);
 
-        Map<String,String> errorMap = new LinkedHashMap<>();
+        Map<String,Object> errorMap = new LinkedHashMap<>();
         errorMap.put("code",errorObj.getErrorCode());
         errorMap.put("message",errorObj.getMessage());
+        errorMap.put("args", errorObj.getArgs());
+
         map.put("error",errorMap);
 
         return new ResponseEntity<Object>(map,status);

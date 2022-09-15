@@ -1,14 +1,11 @@
 package com.obider.transactionservice.exception;
 
-public class RestExceptionBadRequest extends RuntimeException{
-    private String errorCode;
-
+public class RestExceptionBadRequest extends RestExceptionBase{
     public RestExceptionBadRequest(String message, String errorCode) {
-        super(message);
-        this.errorCode = errorCode;
+        super(message, errorCode);
     }
 
-    public String getErrorCode() {
-        return errorCode;
+    public RestExceptionBadRequest(String message, String errorCode, Object args) {
+        super(message, errorCode, args);
     }
 }

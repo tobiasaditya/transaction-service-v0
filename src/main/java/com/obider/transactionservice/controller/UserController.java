@@ -2,12 +2,15 @@ package com.obider.transactionservice.controller;
 
 import com.obider.transactionservice.dto.InputUser;
 import com.obider.transactionservice.exception.RestExceptionBadRequest;
+import com.obider.transactionservice.exception.RestExceptionConstants;
+import com.obider.transactionservice.exception.RestExceptionUnprocessableEntity;
 import com.obider.transactionservice.model.User;
 import com.obider.transactionservice.responses.ResponsesHandler;
 import com.obider.transactionservice.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,7 +29,11 @@ public class UserController {
     }
 
     @PostMapping(path = "/create")
-    public ResponseEntity<Object> createUser(@Valid @RequestBody InputUser inputUser){
+    public ResponseEntity<Object> createUser(@Valid @RequestBody InputUser inputUser, BindingResult bindingResult){
+        //Check validation error
+        if (bindingResult.hasErrors()){
+            throw new RestExceptionUnprocessableEntity("Invalid input", RestExceptionConstants.USR202_02,bindingResult.getAllErrors());
+        }
         User newUser = userService.createUser(inputUser);
         return ResponsesHandler.generateResponse("Success create new user", HttpStatus.OK,inputUser);
     }
