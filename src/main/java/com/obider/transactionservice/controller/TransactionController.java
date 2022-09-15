@@ -66,4 +66,11 @@ public class TransactionController {
         List<Transaction> transactions = transactionService.getTransactions(currentUser.getId(),startDate,endDate);
         return ResponsesHandler.generateResponse("Success get transactions", HttpStatus.OK,transactions);
     }
+
+    @GetMapping(path = "/investment")
+    public ResponseEntity<Object> getInvestments(HttpServletRequest request){
+        User currentUser = (User) request.getAttribute("user");
+        List<Transaction> investments = transactionService.getInvestments(currentUser.getId());
+        return ResponsesHandler.generateResponse("Success get investments", HttpStatus.OK,investments);
+    }
 }

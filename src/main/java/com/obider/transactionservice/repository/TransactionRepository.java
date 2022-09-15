@@ -8,6 +8,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface TransactionRepository extends MongoRepository<Transaction,String> {
-    @Query(value = "{ 'userId' : ?0 , 'requestTime' : { $gte : ?1 , $lte : ?2} }")
+    @Query(value = "{ 'userId' : ?0 , 'requestTime' : { $gte : ?1 , $lte : ?2} , 'trxType' : {$ne:'INVESTMENT'}}")
     List<Transaction> getUserTransactions(String userId, LocalDate startDate, LocalDate endDate);
+
+    @Query(value = "{ 'userId' : ?0 , 'trxType' : 'INVESTMENT'}")
+    List<Transaction> getUserInvestments(String userId);
+
 }

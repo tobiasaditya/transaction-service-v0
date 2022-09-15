@@ -39,6 +39,6 @@ public class TransactionServiceImpl implements TransactionService{
 
     @Override
     public List<Transaction> getInvestments(String userId) {
-        return null;
+        return transactionRepository.getUserInvestments(userId);
     }
 }
