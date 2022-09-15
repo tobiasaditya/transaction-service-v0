@@ -1,9 +1,11 @@
 package com.obider.transactionservice.service;
 
 import com.obider.transactionservice.dto.InputUser;
+import com.obider.transactionservice.dto.LoginUser;
 import com.obider.transactionservice.exception.RestExceptionBadRequest;
 import com.obider.transactionservice.exception.RestExceptionConstants;
 import com.obider.transactionservice.exception.RestExceptionNotFound;
+import com.obider.transactionservice.exception.RestExceptionUnauthorized;
 import com.obider.transactionservice.model.User;
 import com.obider.transactionservice.repository.UserRepository;
 import com.obider.transactionservice.security.HashPassword;
@@ -51,6 +53,20 @@ public class UserServiceImpl implements UserService{
             throw new RestExceptionNotFound("user not found",RestExceptionConstants.USR202_03,id);
         }
         return foundUser.get();
+    }
+
+    @Override
+    public String loginUser(LoginUser input) {
+        User foundUser = getUserByPhone(input.getUsername());
+        if (foundUser==null){
+            throw new RestExceptionUnauthorized("incorrect username/password 1",RestExceptionConstants.USR401_01);
+        }
+
+        if (!HashPassword.verifyPassword(input.getPassword(),foundUser.getPassword())){
+            throw new RestExceptionUnauthorized("incorrect username/password 2",RestExceptionConstants.USR401_02);
+        }
+
+        return "token";
     }
 
     private User getUserByPhone(String phoneNumber) {

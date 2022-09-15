@@ -1,6 +1,7 @@
 package com.obider.transactionservice.controller;
 
 import com.obider.transactionservice.dto.InputUser;
+import com.obider.transactionservice.dto.LoginUser;
 import com.obider.transactionservice.exception.RestExceptionBadRequest;
 import com.obider.transactionservice.exception.RestExceptionConstants;
 import com.obider.transactionservice.exception.RestExceptionUnprocessableEntity;
@@ -14,7 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -42,5 +45,16 @@ public class UserController {
     public ResponseEntity<Object> getUserById(@PathVariable("userId") String userId){
         User foundUser = userService.getUserById(userId);
         return ResponsesHandler.generateResponse("Success get user", HttpStatus.OK,foundUser);
+    }
+
+    @PostMapping(path = "/login")
+    public ResponseEntity<Object> loginUser(@Valid @RequestBody LoginUser loginUser,BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            throw new RestExceptionUnprocessableEntity("Invalid input", RestExceptionConstants.USR202_02,bindingResult.getAllErrors());
+        }
+        String token = userService.loginUser(loginUser);
+        Map<String,String> map = new HashMap<>();
+        map.put("token",token);
+        return ResponsesHandler.generateResponse("Success login", HttpStatus.OK,map);
     }
 }
