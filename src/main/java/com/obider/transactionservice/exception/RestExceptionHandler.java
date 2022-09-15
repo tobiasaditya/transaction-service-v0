@@ -25,4 +25,9 @@ public class RestExceptionHandler {
     public ResponseEntity<Object> handleNotFoundException(RestExceptionNotFound e){
         return ResponsesHandler.generateResponseError(e,HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = {RestExceptionUnauthorized.class})
+    public ResponseEntity<Object> handleUnauthorizedException(RestExceptionUnauthorized e){
+        return ResponsesHandler.generateResponseError(e,HttpStatus.UNAUTHORIZED);
+    }
 }
