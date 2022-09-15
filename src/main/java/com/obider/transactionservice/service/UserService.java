@@ -9,6 +9,4 @@ public interface UserService {
     User createUser(InputUser inputUser);
     List<User> getAllUser();
     User getUserById(String id);
-
-    User getUserByPhone(String phoneNumber);
 }

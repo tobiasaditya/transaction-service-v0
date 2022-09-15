@@ -3,6 +3,7 @@ package com.obider.transactionservice.service;
 import com.obider.transactionservice.dto.InputUser;
 import com.obider.transactionservice.exception.RestExceptionBadRequest;
 import com.obider.transactionservice.exception.RestExceptionConstants;
+import com.obider.transactionservice.exception.RestExceptionNotFound;
 import com.obider.transactionservice.model.User;
 import com.obider.transactionservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -44,11 +45,14 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUserById(String id) {
-        return null;
+        Optional<User> foundUser = userRepository.findById(id);
+        if (foundUser.isEmpty()){
+            throw new RestExceptionNotFound("user not found",RestExceptionConstants.USR202_03,id);
+        }
+        return foundUser.get();
     }
 
-    @Override
-    public User getUserByPhone(String phoneNumber) {
+    private User getUserByPhone(String phoneNumber) {
         Optional<User> foundUser = userRepository.findByPhoneNumber(phoneNumber);
         if (foundUser.isEmpty()){
             return null;

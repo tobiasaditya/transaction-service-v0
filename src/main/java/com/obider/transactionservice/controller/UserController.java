@@ -37,4 +37,10 @@ public class UserController {
         User newUser = userService.createUser(inputUser);
         return ResponsesHandler.generateResponse("Success create new user", HttpStatus.OK,inputUser);
     }
+
+    @GetMapping(path = "/{userId}")
+    public ResponseEntity<Object> getUserById(@PathVariable("userId") String userId){
+        User foundUser = userService.getUserById(userId);
+        return ResponsesHandler.generateResponse("Success get user", HttpStatus.OK,foundUser);
+    }
 }
