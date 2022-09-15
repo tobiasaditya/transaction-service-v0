@@ -12,7 +12,9 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 public class InputTransaction {
-    @EnumValidator(enumClass = TransactionType.class)
+    @EnumValidator(
+            enumClass = TransactionType.class,
+            message = "must be type TransactionType [INCOME,PURCHASE,INVESTMENT]")
     private String trxType;
     @NotEmpty
     private String amount;

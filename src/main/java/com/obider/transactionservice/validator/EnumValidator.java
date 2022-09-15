@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @NotNull
 public @interface EnumValidator {
     Class<? extends Enum<?>> enumClass();
-    String message() default "must be any of enum {enum}";
+    String message() default "must be any of enum";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
