@@ -60,11 +60,11 @@ public class UserServiceImpl implements UserService{
     public String loginUser(LoginUser input) {
         User foundUser = getUserByPhone(input.getUsername());
         if (foundUser==null){
-            throw new RestExceptionUnauthorized("incorrect username/password 1",RestExceptionConstants.USR401_01);
+            throw new RestExceptionUnauthorized("incorrect username/password 1",RestExceptionConstants.USR203_01);
         }
 
         if (!HashPassword.verifyPassword(input.getPassword(),foundUser.getPassword())){
-            throw new RestExceptionUnauthorized("incorrect username/password 2",RestExceptionConstants.USR401_02);
+            throw new RestExceptionUnauthorized("incorrect username/password 2",RestExceptionConstants.USR203_02);
         }
         return JwtToken.generate(foundUser);
     }
